@@ -25,6 +25,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     private List<Contact> contactList;
     private Context context;
 
+
     public ContactAdapter(Context context, List<Contact> contactList) {
         this.context = context;
         this.contactList = contactList;
@@ -40,8 +41,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     @Override
     public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         Contact contact = contactList.get(position);
-        // Aquí establecerás los datos en las vistas de tu ViewHolder.
-        // Por ejemplo: holder.nameTextView.setText(contact.getName());
 
         Glide.with(context)
                 .load(contact.getImageUrl())
@@ -55,16 +54,18 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         holder.phoneuser.setText(contact.getPhone());
 
         holder.deleteContactButton.setOnClickListener(v -> {
-            Fragment activeFragment = ((AppCompatActivity) context).getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
-            if (activeFragment instanceof AcelerometroFragment) {
-                ((AcelerometroFragment) activeFragment).removeContactFromList(position);
-            } else if (activeFragment instanceof MagnetometroFragment) {
-                ((MagnetometroFragment) activeFragment).removeContactFromList(position);
+            int currentPosition = holder.getAdapterPosition();
+            removeContact(currentPosition);
+            if (context instanceof AppActivity) {
+                ((AppActivity) context).removeContactFromActiveFragment(currentPosition);
             }
         });
 
 
-
+    }
+    public void removeContact(int position) {
+        contactList.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override
@@ -73,8 +74,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
     }
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder {
-        // Define aquí tus vistas, por ejemplo:
-        // TextView nameTextView;
         ImageView fotouser;
         TextView nameuser;
         TextView genderuser;
@@ -86,8 +85,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
         public ContactViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Inicializa tus vistas aquí, por ejemplo:
-            // nameTextView = itemView.findViewById(R.id.nameTextView);
             fotouser = itemView.findViewById(R.id.contactImage);
             nameuser = itemView.findViewById(R.id.contactName);
             genderuser = itemView.findViewById(R.id.contactGender);

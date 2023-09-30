@@ -1,5 +1,10 @@
 package com.example.contactosysensores;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -22,9 +27,12 @@ public class MagnetometroFragment extends Fragment {
     private List<Contact> contactList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ContactAdapter adapter;
+    private SensorManager sensorManager;
+    private Sensor magnetometer;
+
+
 
     public MagnetometroFragment() {
-        // Constructor vacío requerido
     }
 
     @Override
@@ -36,9 +44,7 @@ public class MagnetometroFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Aquí puedes inicializar elementos de la vista y agregar lógica relacionada con el magnetómetro
         TextView tvMagnetometerData = view.findViewById(R.id.tvMagnetometerData);
-        // TODO: Actualizar tvMagnetometerData con datos reales del sensor
 
         recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -47,6 +53,8 @@ public class MagnetometroFragment extends Fragment {
         adapter = new ContactAdapter(getContext(), contactList);
         recyclerView.setAdapter(adapter);
 
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     }
 
 
@@ -74,9 +82,61 @@ public class MagnetometroFragment extends Fragment {
             }
         }
     }
-    public void removeContactFromList(int position) {
+    public void removeContact(int position) {
         contactList.remove(position);
         adapter.notifyItemRemoved(position);
     }
 
+
+    private final SensorEventListener magnetometerListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            float x = event.values[0];
+            float y = event.values[1];
+            updateVisibilityBasedOnAngle(x, y);
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sensorManager.registerListener(magnetometerListener, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (sensorManager != null) {
+            sensorManager.unregisterListener(magnetometerListener);
+        }
+    }
+
+
+    private void updateVisibilityBasedOnAngle(float x, float y) {
+        double angle = Math.toDegrees(Math.atan2(y, x));
+        double adjustedAngle = angle - 90;
+
+        if (adjustedAngle < 0) {
+            adjustedAngle += 360;
+        }
+
+        float visibilityPercentage;
+        if (adjustedAngle < 0.05 * 180) {
+            visibilityPercentage = 1f;
+        } else if (adjustedAngle < 0.25 * 180) {
+            visibilityPercentage = 0.75f;
+        } else if (adjustedAngle < 0.5 * 180) {
+            visibilityPercentage = 0.5f;
+        } else if (adjustedAngle < 0.75 * 180) {
+            visibilityPercentage = 0.25f;
+        } else {
+            visibilityPercentage = 0f;
+        }
+
+        recyclerView.setAlpha(visibilityPercentage);
+    }
 }

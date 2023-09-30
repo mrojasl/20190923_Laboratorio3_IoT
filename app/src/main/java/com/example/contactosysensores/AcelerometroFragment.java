@@ -1,6 +1,11 @@
 package com.example.contactosysensores;
 
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +31,12 @@ public class AcelerometroFragment extends Fragment {
     private ContactAdapter adapter;
     private RecyclerView recyclerView;
     private List<Contact> contactList = new ArrayList<>();
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
 
 
 
     public AcelerometroFragment() {
-        // Constructor vacío requerido
     }
 
     @Override
@@ -41,10 +47,7 @@ public class AcelerometroFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // Aquí puedes inicializar elementos de la vista y agregar lógica relacionada con el acelerómetro
         TextView tvAccelerometerData = view.findViewById(R.id.tvAccelerometerData);
-        // TODO: Actualizar tvAccelerometerData con datos reales del sensor
 
         recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -53,6 +56,9 @@ public class AcelerometroFragment extends Fragment {
         adapter = new ContactAdapter(getContext(), contactList);
         recyclerView.setAdapter(adapter);
 
+
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
     public void addContact(Contact contact) {
@@ -77,9 +83,52 @@ public class AcelerometroFragment extends Fragment {
             }
         }
     }
-    public void removeContactFromList(int position) {
+    public void removeContact(int position) {
         contactList.remove(position);
         adapter.notifyItemRemoved(position);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        sensorManager.registerListener(accelerometerListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (sensorManager != null) {
+            sensorManager.unregisterListener(accelerometerListener);
+        }
+    }
+
+
+
+    private static final float UMBRAL = 15f;
+
+    private final SensorEventListener accelerometerListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            float ax = event.values[0];
+            float ay = event.values[1];
+            float az = event.values[2];
+
+            double totalAcceleration = Math.sqrt(ax * ax + ay * ay + az * az);
+            if (totalAcceleration > UMBRAL) {
+                Toast.makeText(getContext(), String.format("Su aceleración: %.2f m/s^2", totalAcceleration), Toast.LENGTH_SHORT).show();
+                autoScrollContacts();
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
+
+
+    private void autoScrollContacts() {
+        if (recyclerView != null) {
+            recyclerView.smoothScrollBy(0, 1000);
+        }
+    }
 }

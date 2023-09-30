@@ -35,7 +35,6 @@ public class AppActivity extends AppCompatActivity {
         btnSwitchSensor = findViewById(R.id.btnSwitchSensor);
         Button btnAddContact = findViewById(R.id.btnAddContact);
 
-        // Cargar fragmento inicial
         loadMagnetometerFragment();
 
         btnSwitchSensor.setOnClickListener(v -> {
@@ -46,18 +45,14 @@ public class AppActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: Lógica para el botón "Añadir Contactos"
 
         btnAddContact.setOnClickListener(v -> {
-            // Deshabilita los botones
             btnAddContact.setEnabled(false);
             btnSwitchSensor.setEnabled(false);
 
-            // Cambia la opacidad de los botones a 0.5 para indicar que están deshabilitados
             btnAddContact.setAlpha(0.9f);
             btnSwitchSensor.setAlpha(0.9f);
 
-            // Ahora inicia la solicitud para agregar un contacto
             fetchRandomContact();
 
 
@@ -74,13 +69,11 @@ public class AppActivity extends AppCompatActivity {
         MagnetometroFragment fragment = new MagnetometroFragment();
         fragment.setContactList(magnetometroContactList);
 
-        // Cambiar el título y el texto del botón
         tvSensorTitle.setText("Magnetómetro");
         btnSwitchSensor.setText("Ir a Acelerómetro");
 
-        // Cargar el fragmento del magnetómetro
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)  // Nota que estamos usando la instancia 'fragment' aquí
+                .replace(R.id.fragmentContainer, fragment)
                 .commit();
     }
 
@@ -88,13 +81,11 @@ public class AppActivity extends AppCompatActivity {
         AcelerometroFragment fragment = new AcelerometroFragment();
         fragment.setContactList(acelerometroContactList);
 
-        // Cambiar el título y el texto del botón
         tvSensorTitle.setText("Acelerómetro");
         btnSwitchSensor.setText("Ir a Magnetómetro");
 
-        // Cargar el fragmento del acelerómetro
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)  // Nota que estamos usando la instancia 'fragment' aquí
+                .replace(R.id.fragmentContainer, fragment)
                 .commit();
     }
 
@@ -127,7 +118,6 @@ public class AppActivity extends AppCompatActivity {
                     JSONArray resultsArray = jsonObject.getJSONArray("results");
                     JSONObject contactJson = resultsArray.getJSONObject(0);
 
-                    // Parse the contact details
                     JSONObject nameObj = contactJson.getJSONObject("name");
                     String name = nameObj.getString("title") + " " + nameObj.getString("first") + " " + nameObj.getString("last");
                     String gender = contactJson.getString("gender");
@@ -140,7 +130,6 @@ public class AppActivity extends AppCompatActivity {
 
                     Contact contact = new Contact(name, gender, city, country, email, phone, imageUrl);
 
-                // Set data to the contact object
                     contact.setName(name);
                     contact.setGender(gender);
                     contact.setCity(city);
@@ -150,11 +139,7 @@ public class AppActivity extends AppCompatActivity {
                     contact.setImageUrl(imageUrl);
 
 
-
-
-                    // Update the UI on the main thread
                     runOnUiThread(() -> {
-                        // Here we'll add the contact to the active fragment's list and notify the adapter
 
 
                         Fragment activeFragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
@@ -196,5 +181,14 @@ public class AppActivity extends AppCompatActivity {
         }).start();
     }
 
+
+    public void removeContactFromActiveFragment(int position) {
+        Fragment activeFragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+        if (activeFragment instanceof AcelerometroFragment) {
+            acelerometroContactList.remove(position);
+        } else if (activeFragment instanceof MagnetometroFragment) {
+            magnetometroContactList.remove(position);
+        }
+    }
 
 }
