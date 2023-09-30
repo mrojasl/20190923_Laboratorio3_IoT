@@ -220,12 +220,12 @@ public class AppActivity extends AppCompatActivity {
         String message;
 
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
-        if (currentFragment instanceof MagnetometroFragment) {
-            title = "Detalles - Magnetómetro";
+        if (currentFragment instanceof AcelerometroFragment) {
+            title = "Detalles - Acelerómetro";
             message = "Haga CLICK en 'Añadir' para agregar contactos a su lista. Esta aplicación está utilizando el ACELERÓMETRO de su dispositivo.\n\n" +
                     "De este forma, la lista hará scroll hacia abajo, cuando agite su dispositivo.";
-        } else if (currentFragment instanceof AcelerometroFragment) {
-            title = "Detalles - Acelerómetro";
+        } else if (currentFragment instanceof MagnetometroFragment) {
+            title = "Detalles - Magnetómetro";
             message = "Haga CLICK en 'Añadir' para agregar contactos a su lista. Esta aplicación está utilizando el MAGNETÓMETRO de su dispositivo.\n\n" +
                     "De esta forma, la lsita se mostrará al 100% cuando se apunte al NORTE. Caso contrario, se desvanecerá...";
         } else {
