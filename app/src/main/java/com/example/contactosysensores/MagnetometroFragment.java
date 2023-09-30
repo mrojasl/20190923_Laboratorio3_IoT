@@ -94,7 +94,7 @@ public class MagnetometroFragment extends Fragment {
         public void onSensorChanged(SensorEvent event) {
             float x = event.values[0];
             float y = event.values[1];
-            updateVisibilityBasedOnAngle(x, y);
+            updateVisibilityBasedOnAngle(x,y);
         }
 
         @Override
@@ -119,25 +119,15 @@ public class MagnetometroFragment extends Fragment {
 
     private void updateVisibilityBasedOnAngle(float x, float y) {
         double angle = Math.toDegrees(Math.atan2(y, x));
-        double adjustedAngle = angle - 90;
 
+        if (angle < 0) {
+            angle += 360;
+        }
+        double adjustedAngle = angle - 90;
         if (adjustedAngle < 0) {
             adjustedAngle += 360;
         }
-
-        float visibilityPercentage;
-        if (adjustedAngle < 0.05 * 180) {
-            visibilityPercentage = 1f;
-        } else if (adjustedAngle < 0.25 * 180) {
-            visibilityPercentage = 0.75f;
-        } else if (adjustedAngle < 0.5 * 180) {
-            visibilityPercentage = 0.5f;
-        } else if (adjustedAngle < 0.75 * 180) {
-            visibilityPercentage = 0.25f;
-        } else {
-            visibilityPercentage = 0f;
-        }
-
+        float visibilityPercentage = (float) ((Math.cos(Math.toRadians(adjustedAngle)) + 1) / 2);
         recyclerView.setAlpha(visibilityPercentage);
     }
 }
