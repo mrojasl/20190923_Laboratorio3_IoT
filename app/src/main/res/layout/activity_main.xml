@@ -7,17 +7,140 @@
     tools:context=".MainActivity"
     android:background="@drawable/background_drawable">
 
+    <ImageView
+        android:id="@+id/ivWifi"
+        android:layout_width="57dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Icono WiFi"
+        android:src="@drawable/ic_wifi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="196dp"
+        android:text="Lab 4 - IoT"
+        android:textSize="40sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:shadowColor="#66000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:textSize="24sp"
+        android:id="@+id/tvSensors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:shadowColor="#66000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1"
+        android:text="Sensors"
+        app:layout_constraintEnd_toEndOf="@id/tvCreatedBy"
+        app:layout_constraintStart_toStartOf="@id/tvCreatedBy"
+        app:layout_constraintTop_toBottomOf="@id/tvCreatedBy" />
+
+    <TextView
+        android:id="@+id/tvFragments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:shadowColor="#66000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1"
+        android:textSize="24sp"
+        android:text="Fragments"
+        app:layout_constraintEnd_toEndOf="@id/tvSensors"
+        app:layout_constraintStart_toStartOf="@id/tvSensors"
+        app:layout_constraintTop_toBottomOf="@id/tvSensors" />
+
+    <TextView
+        android:id="@+id/tvRecyclerView"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:shadowColor="#66000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginTop="24dp"
+        android:text="RecyclerView"
+        app:layout_constraintEnd_toEndOf="@id/tvFragments"
+        app:layout_constraintStart_toStartOf="@id/tvFragments"
+        app:layout_constraintTop_toBottomOf="@id/tvFragments" />
+
+    <TextView
+        android:id="@+id/tvCreatedBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="24sp"
+        android:text="Creado por: 20190923"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:shadowColor="#66000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1"
+        app:layout_constraintEnd_toEndOf="@id/tvTitle"
+        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintStart_toStartOf="@id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
     <Button
         android:id="@+id/btnIngresar"
-        android:layout_width="wrap_content"
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:backgroundTint="#A85300"
         android:text="Ingresar"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.751" />
+        app:layout_constraintTop_toBottomOf="@id/tvRecyclerView"
+        app:layout_constraintVertical_bias="0.276" />
+
+    <ImageView
+        android:id="@+id/ivAnt"
+        android:layout_width="70dp"
+        android:layout_height="75dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="Icono Ant"
+        android:src="@drawable/ic_ant"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

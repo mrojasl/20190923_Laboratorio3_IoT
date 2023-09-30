@@ -6,4 +6,7 @@
     </style>
 
     <style name="Theme.ContactosYSensores" parent="Base.Theme.ContactosYSensores" />
+    <style name="CustomProgressBar" parent="android:Widget.ProgressBar.Large">
+        <item name="android:indeterminateDrawable">@drawable/progressbarpersonalizado</item>
+    </style>
 </resources>

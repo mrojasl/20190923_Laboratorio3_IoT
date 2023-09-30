@@ -6,11 +6,6 @@
     android:padding="16dp">
 
 
-    <TextView
-        android:id="@+id/tvAccelerometerData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Datos del Acelerómetro" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
