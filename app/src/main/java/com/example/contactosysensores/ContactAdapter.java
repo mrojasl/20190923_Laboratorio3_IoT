@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -53,10 +55,15 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         holder.phoneuser.setText(contact.getPhone());
 
         holder.deleteContactButton.setOnClickListener(v -> {
-            contactList.remove(position);  // Elimina el contacto de la lista
-            notifyItemRemoved(position);   // Notifica al adaptador sobre el ítem eliminado
-            notifyItemRangeChanged(position, contactList.size()); // Actualiza el rango de ítems
+            Fragment activeFragment = ((AppCompatActivity) context).getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+            if (activeFragment instanceof AcelerometroFragment) {
+                ((AcelerometroFragment) activeFragment).removeContactFromList(position);
+            } else if (activeFragment instanceof MagnetometroFragment) {
+                ((MagnetometroFragment) activeFragment).removeContactFromList(position);
+            }
         });
+
+
 
     }
 
@@ -93,7 +100,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
 
         }
-    }
 
+    }
 
 }

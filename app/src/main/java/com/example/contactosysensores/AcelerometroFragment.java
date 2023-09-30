@@ -77,4 +77,9 @@ public class AcelerometroFragment extends Fragment {
             }
         }
     }
+    public void removeContactFromList(int position) {
+        contactList.remove(position);
+        adapter.notifyItemRemoved(position);
+    }
+
 }

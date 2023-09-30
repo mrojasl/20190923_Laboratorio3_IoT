@@ -74,6 +74,9 @@ public class MagnetometroFragment extends Fragment {
             }
         }
     }
-
+    public void removeContactFromList(int position) {
+        contactList.remove(position);
+        adapter.notifyItemRemoved(position);
+    }
 
 }
